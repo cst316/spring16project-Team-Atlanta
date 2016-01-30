@@ -644,6 +644,7 @@ public class AppFrame extends JFrame {
         Util.runBrowser(App.GUIDE_URL);
     }
     
+    
     //File | Exit action performed
     public void doExit() {
         if (Configuration.get("ASK_ON_EXIT").equals("yes")) {
@@ -680,17 +681,15 @@ public class AppFrame extends JFrame {
          dlg.setVisible(true);
     }
 
+    
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-            if (Configuration.get("ON_CLOSE").equals("exit"))
                 doExit();
-            else
-                doMinimize();
         }
+        
         else if ((e.getID() == WindowEvent.WINDOW_ICONIFIED)) {
-            super.processWindowEvent(new WindowEvent(this,
+        	super.processWindowEvent(new WindowEvent(this,
                     WindowEvent.WINDOW_CLOSING));
-            doMinimize();
         }
         else
             super.processWindowEvent(e);
