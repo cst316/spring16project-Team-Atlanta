@@ -135,14 +135,4 @@ public class ResourcesListImpl implements ResourcesList {
     /**
      * 
      */
-    public void addResourceLabel()
-    {
-    	
-    }
-   
-    public void addResourceDesc()
-    {
-    	
-    }
-
 }
