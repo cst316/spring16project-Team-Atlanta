@@ -680,6 +680,22 @@ public class TaskPanel extends JPanel {
 
 	void ppCompleteTask_actionPerformed(ActionEvent e) {
 		String msg;
+		String thisTaskId = taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString();
+		if (taskTable.getSelectedRows().length > 1)
+            msg = Local.getString("Complete")+" "+taskTable.getSelectedRows().length +" "+Local.getString("tasks")+"?"
+             + "\n"+Local.getString("Are you sure?");
+        else {
+        	Task t = CurrentProject.getTaskList().getTask(thisTaskId);
+			msg = Local.getString("Complete task")+"\n'" + t.getText() + "'\n"+Local.getString("Are you sure?");
+        }
+        int n =
+            JOptionPane.showConfirmDialog(
+                App.getFrame(),
+                msg,
+                Local.getString("Remove task"),
+                JOptionPane.YES_NO_OPTION);
+        if (n != JOptionPane.YES_OPTION)
+            return;
 		Vector tocomplete = new Vector();
 		for (int i = 0; i < taskTable.getSelectedRows().length; i++) {
 			Task t =
