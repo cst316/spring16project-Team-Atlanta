@@ -131,6 +131,18 @@ public class ResourcesListImpl implements ResourcesList {
                 v.add(rs.get(i).getAttribute("path").getValue());
         return v;
     }*/
+    
+    /**
+     * 
+     */
+    public void addResourceLabel()
+    {
+    	
+    }
    
+    public void addResourceDesc()
+    {
+    	
+    }
 
 }

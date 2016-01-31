@@ -42,11 +42,21 @@ public class ResourcesPanel extends JPanel {
     JButton removeResB = new JButton();
     JScrollPane scrollPane = new JScrollPane();
     JButton refreshB = new JButton();
+    
+    //New code added for buttons to add a resource label and description
+    JButton newResLabel = new JButton();
+    JButton newResDesc = new JButton();
+    
+    
   JPopupMenu resPPMenu = new JPopupMenu();
   JMenuItem ppRun = new JMenuItem();
   JMenuItem ppRemoveRes = new JMenuItem();
   JMenuItem ppNewRes = new JMenuItem();
   JMenuItem ppRefresh = new JMenuItem();
+  
+  //New code added to add buttons to the menu
+  JMenuItem ppNewLabel = new JMenuItem();
+  JMenuItem ppNewDesc = new JMenuItem();
 
     public ResourcesPanel() {
         try {
@@ -64,7 +74,7 @@ public class ResourcesPanel extends JPanel {
         newResB.setEnabled(true);
         newResB.setMaximumSize(new Dimension(24, 24));
         newResB.setMinimumSize(new Dimension(24, 24));
-        newResB.setToolTipText(Local.getString("New resource"));
+        newResB.setToolTipText(Local.getString("New Resource"));
         newResB.setRequestFocusEnabled(false);
         newResB.setPreferredSize(new Dimension(24, 24));
         newResB.setFocusable(false);
@@ -107,6 +117,9 @@ public class ResourcesPanel extends JPanel {
 
                 removeResB.setEnabled(enbl); ppRemoveRes.setEnabled(enbl);
                 ppRun.setEnabled(enbl);
+                
+                // New code
+                newResLabel.setEnabled(enbl); newResDesc.setEnabled(enbl);
             }
         });
         refreshB.setBorderPainted(false);
@@ -124,6 +137,44 @@ public class ResourcesPanel extends JPanel {
         refreshB.setEnabled(true);
         refreshB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //New Code added for added buttons
+        newResLabel.setBorderPainted(false);
+        //newResLabel.addActionListener(new java.awt.event.ActionListener() {
+        //    public void actionPerformed(ActionEvent e) {
+        //    	newResLabel_actionPerformed(e);
+        //   }
+        //});
+        newResLabel.setFocusable(false);
+        newResLabel.setPreferredSize(new Dimension(24, 24));
+        newResLabel.setRequestFocusEnabled(false);
+        newResLabel.setToolTipText(Local.getString("Add Label"));
+        newResLabel.setMinimumSize(new Dimension(24, 24));
+        newResLabel.setMaximumSize(new Dimension(24, 24));
+        newResLabel.setEnabled(true);
+        newResLabel.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addresource.png")));
+        
+
+        newResDesc.setBorderPainted(false);
+        //newResDesc.addActionListener(new java.awt.event.ActionListener() {
+        //    public void actionPerformed(ActionEvent e) {
+        //    	newResDesc_actionPerformed(e);
+        //    }
+        //});
+        newResDesc.setFocusable(false);
+        newResDesc.setPreferredSize(new Dimension(24, 24));
+        newResDesc.setRequestFocusEnabled(false);
+        newResDesc.setToolTipText(Local.getString("All Description"));
+        newResDesc.setMinimumSize(new Dimension(24, 24));
+        newResDesc.setMaximumSize(new Dimension(24, 24));
+        newResDesc.setEnabled(true);
+        newResDesc.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addresource.png")));
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        
         resPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
     ppRun.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRun.setText(Local.getString("Open resource")+"...");
@@ -165,6 +216,10 @@ public class ResourcesPanel extends JPanel {
         toolBar.add(removeResB, null);
         toolBar.addSeparator();
         toolBar.add(refreshB, null);
+        toolBar.addSeparator();
+        toolBar.add(newResLabel, null);
+        toolBar.addSeparator();
+        toolBar.add(newResDesc, null);
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.getViewport().add(resourcesTable, null);
         this.add(toolBar, BorderLayout.NORTH);

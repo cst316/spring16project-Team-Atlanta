@@ -54,10 +54,15 @@ public class ResourcesTable extends JTable {
     }
 
     void initColumsWidth() {
-        for (int i = 0; i < 4; i++) {
+    	//Change code ~ for(int i = 0: i < 5: i++) ~ to accomodate another column for Description
+    	//
+        for (int i = 0; i < 5; i++) {
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(32767);
+            	
+            	//Reduce the preferred width for Name field
+            	//Changed the preferred width for the first field from 32767 to 320
+                column.setPreferredWidth(320);
             }
             else {
                 column.setMinWidth(100);
@@ -121,6 +126,9 @@ public class ResourcesTable extends JTable {
 
         String[] columnNames = {
                 Local.getString("Name"),
+                
+                //add lines here for another Description field
+                Local.getString("Description"),
                 Local.getString("Type"),
                 Local.getString("Date modified"),
                 Local.getString("Path")};
