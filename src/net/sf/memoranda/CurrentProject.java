@@ -26,6 +26,7 @@ public class CurrentProject {
 
     private static Project _project = null;
     private static TaskList _tasklist = null;
+    private static ProcessList _processlist = null;
     private static NoteList _notelist = null;
     private static ResourcesList _resources = null;
     private static Vector projectListeners = new Vector();
@@ -51,6 +52,7 @@ public class CurrentProject {
 		}		
 		
         _tasklist = CurrentStorage.get().openTaskList(_project);
+        _processlist = CurrentStorage.get().openProcessList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
         AppFrame.addExitListener(new ActionListener() {
@@ -69,6 +71,10 @@ public class CurrentProject {
             return _tasklist;
     }
 
+    public static ProcessList getProcessList() {
+        return _processlist;
+    }
+
     public static NoteList getNoteList() {
             return _notelist;
     }
@@ -80,11 +86,13 @@ public class CurrentProject {
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;
         TaskList newtasklist = CurrentStorage.get().openTaskList(project);
+        ProcessList newprocesslist = CurrentStorage.get().openProcessList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         notifyListenersBefore(project, newnotelist, newtasklist, newresources);
         _project = project;
         _tasklist = newtasklist;
+        _processlist = newprocesslist;
         _notelist = newnotelist;
         _resources = newresources;
         notifyListenersAfter();
@@ -117,6 +125,7 @@ public class CurrentProject {
 
         storage.storeNoteList(_notelist, _project);
         storage.storeTaskList(_tasklist, _project); 
+        storage.storeProcessList(_processlist, _project);
         storage.storeResourcesList(_resources, _project);
         storage.storeProjectManager();
     }
@@ -124,6 +133,7 @@ public class CurrentProject {
     public static void free() {
         _project = null;
         _tasklist = null;
+        _processlist = null;
         _notelist = null;
         _resources = null;
     }
