@@ -18,6 +18,14 @@ import net.sf.memoranda.date.CalendarDate;
 /*$Id: Task.java,v 1.9 2005/06/16 04:21:32 alexeya Exp $*/
 public interface Task {
     
+	public static final int BACKLOG = 0;
+	
+	public static final int INPROGRESS = 1;
+	
+	public static final int TESTING = 2;
+	
+	public static final int COMPLETE = 3;
+	
     public static final int SCHEDULED = 0;
 
     public static final int ACTIVE = 1;
@@ -78,6 +86,9 @@ public interface Task {
     void setDescription(String description);
     String getDescription();
 
+    int getStatus(Task task);
+    boolean setStatus(int status);
+    
     Task getParentTask();
     String getParentId();
     

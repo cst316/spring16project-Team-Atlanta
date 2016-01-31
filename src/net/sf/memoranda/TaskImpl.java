@@ -388,5 +388,17 @@ public class TaskImpl implements Task, Comparable {
 		return false;
 	}
 
+	public int getStatus(Task task) {
+		Attribute pa = _element.getAttribute("task");
+        if (pa == null)
+            return Task.BACKLOG;
+        return new Integer(pa.getValue()).intValue();
+	}
+
+	public boolean setStatus(int status) {
+		 setAttr("task", String.valueOf(status));
+		 return true;
+	}
+
 	
 }

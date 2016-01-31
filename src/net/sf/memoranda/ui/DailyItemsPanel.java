@@ -63,6 +63,7 @@ public class DailyItemsPanel extends JPanel {
     JLabel currentDateLabel = new JLabel();
     BorderLayout borderLayout4 = new BorderLayout();
     TaskPanel tasksPanel = new TaskPanel(this);
+    ProcessPanel processesPanel = new ProcessPanel(this);
     EventsPanel eventsPanel = new EventsPanel(this);
     AgendaPanel agendaPanel = new AgendaPanel(this);
     ImageIcon expIcon = new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/exp_right.png"));
@@ -205,6 +206,7 @@ public class DailyItemsPanel extends JPanel {
         editorsPanel.add(agendaPanel, "AGENDA");
         editorsPanel.add(eventsPanel, "EVENTS");
         editorsPanel.add(tasksPanel, "TASKS");
+        editorsPanel.add(processesPanel , "PROCESSES");
         editorsPanel.add(editorPanel, "NOTES");
         
         splitPane.add(mainPanel, JSplitPane.RIGHT);
