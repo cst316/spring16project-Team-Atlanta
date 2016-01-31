@@ -139,13 +139,10 @@ public class ResourcesPanel extends JPanel {
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //New Code added for added buttons
+        //////////////////////////////   New Code added for added buttons   ///////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         newResLabel.setBorderPainted(false);
-        //newResLabel.addActionListener(new java.awt.event.ActionListener() {
-        //    public void actionPerformed(ActionEvent e) {
-        //    	newResLabel_actionPerformed(e);
-        //   }
-        //});
         newResLabel.setFocusable(false);
         newResLabel.setPreferredSize(new Dimension(24, 24));
         newResLabel.setRequestFocusEnabled(false);
@@ -153,25 +150,28 @@ public class ResourcesPanel extends JPanel {
         newResLabel.setMinimumSize(new Dimension(24, 24));
         newResLabel.setMaximumSize(new Dimension(24, 24));
         newResLabel.setEnabled(true);
-        newResLabel.setIcon(
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addresource.png")));
+        newResLabel.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addlabel.png")));
+        newResLabel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	newResLabel_actionPerformed(e);
+           }
+        });
         
 
         newResDesc.setBorderPainted(false);
-        //newResDesc.addActionListener(new java.awt.event.ActionListener() {
-        //    public void actionPerformed(ActionEvent e) {
-        //    	newResDesc_actionPerformed(e);
-        //    }
-        //});
         newResDesc.setFocusable(false);
         newResDesc.setPreferredSize(new Dimension(24, 24));
         newResDesc.setRequestFocusEnabled(false);
-        newResDesc.setToolTipText(Local.getString("All Description"));
+        newResDesc.setToolTipText(Local.getString("Add Description"));
         newResDesc.setMinimumSize(new Dimension(24, 24));
         newResDesc.setMaximumSize(new Dimension(24, 24));
         newResDesc.setEnabled(true);
-        newResDesc.setIcon(
-            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/addresource.png")));
+        newResDesc.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/adddesc.png")));
+        newResDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	newResDesc_actionPerformed(e);
+            }
+        });
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         
@@ -242,6 +242,29 @@ public class ResourcesPanel extends JPanel {
 		});
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////   Button Code   /////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    void newResLabel_actionPerformed(ActionEvent e){
+    	AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New Label"));
+    	Dimension frmSize = App.getFrame().getSize();
+    	Point loc = App.getFrame().getLocation();
+        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+        dlg.setVisible(true);
+        if (dlg.CANCELLED)
+            return;
+        
+    }
+    
+    void newResDesc_actionPerformed(ActionEvent e){
+    	String input = JOptionPane.showInputDialog("Enter Label for Resource:");
+    	System.out.println(input);
+        
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     void newResB_actionPerformed(ActionEvent e) {
         AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New resource"));
         Dimension frmSize = App.getFrame().getSize();
