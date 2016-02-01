@@ -61,8 +61,8 @@ public class ResourcesTable extends JTable {
             if (i == 0) {
             	
             	//Reduce the preferred width for Name field
-            	//Changed the preferred width for the first field from 32767 to 320
-                column.setPreferredWidth(320);
+            	//Changed the preferred width for the first field from 32767 to 200
+                column.setPreferredWidth(200);
             }
             else {
                 column.setMinWidth(100);
@@ -126,8 +126,6 @@ public class ResourcesTable extends JTable {
 
         String[] columnNames = {
                 Local.getString("Name"),
-                
-                //add lines here for another Description field
                 Local.getString("Description"),
                 Local.getString("Type"),
                 Local.getString("Date modified"),
@@ -155,13 +153,15 @@ public class ResourcesTable extends JTable {
                 File f = new File(r.getPath());
                 switch (col) {
                     case 0: return f.getName();
-                    case 1: MimeType mt = MimeTypesList.getMimeTypeForFile(f.getName());
+                    //Added code for the description field
+                    case 1: 
+                    case 2: MimeType mt = MimeTypesList.getMimeTypeForFile(f.getName());
                             if (mt != null) return mt.getLabel();
                             else return "unknown";
-                    case 2: Date d = new Date(f.lastModified());
+                    case 3: Date d = new Date(f.lastModified());
                             return d;/*Local.getDateString(d, java.text.DateFormat.SHORT) +" "+
                                    Local.getTimeString(d);*/
-                    case 3:return f.getPath();
+                    case 4:return f.getPath();
                 }
             }
             else {

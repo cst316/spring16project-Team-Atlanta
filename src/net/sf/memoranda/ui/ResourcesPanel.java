@@ -139,7 +139,7 @@ public class ResourcesPanel extends JPanel {
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////   New Code added for added buttons   ///////////////////////////////////////////////
+        //////////////////////////////   New Code added for new function buttons   ///////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         newResLabel.setBorderPainted(false);
@@ -247,19 +247,15 @@ public class ResourcesPanel extends JPanel {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     void newResLabel_actionPerformed(ActionEvent e){
-    	AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New Label"));
-    	Dimension frmSize = App.getFrame().getSize();
-    	Point loc = App.getFrame().getLocation();
-        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
-        dlg.setVisible(true);
-        if (dlg.CANCELLED)
-            return;
+    	String input = JOptionPane.showInputDialog("Enter Label for Resource:");
+    	
+        int column = 0;
+        int row = resourcesTable.getSelectedRow();
         
     }
     
     void newResDesc_actionPerformed(ActionEvent e){
-    	String input = JOptionPane.showInputDialog("Enter Label for Resource:");
-    	System.out.println(input);
+    	String input = JOptionPane.showInputDialog("Enter Description for Resource:");
         
     }
     
