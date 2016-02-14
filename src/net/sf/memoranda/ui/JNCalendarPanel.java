@@ -25,6 +25,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.Project;
@@ -213,7 +214,7 @@ public class JNCalendarPanel extends JPanel {
       }
     });
     CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {}
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {}
             public void projectWasChanged() {
                 jnCalendar.updateUI();
             }

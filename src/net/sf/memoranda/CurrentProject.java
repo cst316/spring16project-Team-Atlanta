@@ -29,6 +29,7 @@ public class CurrentProject {
     private static ProcessList _processlist = null;
     private static NoteList _notelist = null;
     private static ResourcesList _resources = null;
+    private static ContactsList _contacts = null;
     private static Vector projectListeners = new Vector();
 
         
@@ -55,6 +56,7 @@ public class CurrentProject {
         _processlist = CurrentStorage.get().openProcessList(_project);
         _notelist = CurrentStorage.get().openNoteList(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
+        _contacts = CurrentStorage.get().openContactsList(_project);
         AppFrame.addExitListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 save();                                               
@@ -82,6 +84,10 @@ public class CurrentProject {
     public static ResourcesList getResourcesList() {
             return _resources;
     }
+    
+    public static ContactsList getContactsList() {
+        return _contacts;
+    }
 
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;
@@ -89,12 +95,14 @@ public class CurrentProject {
         ProcessList newprocesslist = CurrentStorage.get().openProcessList(project);
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
-        notifyListenersBefore(project, newnotelist, newtasklist, newresources);
+        ContactsList newcontacts = CurrentStorage.get().openContactsList(project);
+        notifyListenersBefore(project, newnotelist, newtasklist, newresources, newcontacts);
         _project = project;
         _tasklist = newtasklist;
         _processlist = newprocesslist;
         _notelist = newnotelist;
         _resources = newresources;
+        _contacts = newcontacts;
         notifyListenersAfter();
         Context.put("LAST_OPENED_PROJECT_ID", project.getID());
     }
@@ -107,9 +115,9 @@ public class CurrentProject {
         return projectListeners;
     }
 
-    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, ResourcesList rl) {
+    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
         for (int i = 0; i < projectListeners.size(); i++) {
-            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl);
+            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl, cl);
             /*DEBUGSystem.out.println(projectListeners.get(i));*/
         }
     }
@@ -127,6 +135,7 @@ public class CurrentProject {
         storage.storeTaskList(_tasklist, _project); 
         storage.storeProcessList(_processlist, _project);
         storage.storeResourcesList(_resources, _project);
+        storage.storeContactsList(_contacts, _project);
         storage.storeProjectManager();
     }
     
@@ -136,5 +145,6 @@ public class CurrentProject {
         _processlist = null;
         _notelist = null;
         _resources = null;
+        _contacts = null;
     }
 }

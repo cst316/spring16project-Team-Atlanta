@@ -13,6 +13,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
+import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentNote;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Note;
@@ -61,7 +62,7 @@ public class NotesList extends JList {
         });
 
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
             }
             public void projectWasChanged() {
                 update();

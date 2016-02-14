@@ -8,6 +8,7 @@
  */
 package net.sf.memoranda.util;
 
+import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
 import net.sf.memoranda.ProcessList;
@@ -49,6 +50,9 @@ public interface Storage {
    
     ResourcesList openResourcesList(Project prj);
     void storeResourcesList(ResourcesList rl, Project prj);
+    
+    ContactsList openContactsList(Project prj);
+    void storeContactsList(ContactsList cl, Project prj);
     
     void restoreContext();
     void storeContext(); 
