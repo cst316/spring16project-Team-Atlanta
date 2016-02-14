@@ -948,7 +948,7 @@ public class AppFrame extends JFrame {
              * 
              * @param e  --what is used for the method to be called
              */
-            protected void reportExportAction(ActionEvent e) {
+            public void reportExportAction(ActionEvent e) {
          
                 JFileChooser chooser = new JFileChooser();
                 chooser.setFileHidingEnabled(false);
