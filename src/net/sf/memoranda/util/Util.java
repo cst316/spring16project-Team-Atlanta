@@ -122,6 +122,7 @@ public class Util {
 	 */
 	public static URI convertURLtoURI(String url) {
 		URI uri;
+		url = url.replace('\\', '/');
 		try {
 			uri = java.net.URI.create(url);
 		} catch (Exception e) {
