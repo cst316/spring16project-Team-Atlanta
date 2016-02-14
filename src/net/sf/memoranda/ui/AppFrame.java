@@ -50,6 +50,7 @@ import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.ProjectExporter;
 import net.sf.memoranda.util.ProjectPackager;
+import net.sf.memoranda.util.ReportExporter;
 import net.sf.memoranda.util.Util;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -82,7 +83,7 @@ public class AppFrame extends JFrame {
     ProjectsPanel projectsPanel = new ProjectsPanel();
     boolean prPanelExpanded = false;
 
-    JMenu jMenuEdit = new JMenu();
+    JMenu jMenuEdit = new JMenu(); 
     JMenu jMenuFormat = new JMenu();
     JMenu jMenuInsert = new JMenu();
 
@@ -123,6 +124,19 @@ public class AppFrame extends JFrame {
                 }
         };
         
+        /**
+         * Creates the action to generate a report for the project selected.
+         * This action then calls upon ppReportExport_actionPerformed(e) for
+         * which shows the Frame for the saving process and starts the report generate.
+         */
+        public Action exportProjectReportAction =
+                new AbstractAction(Local.getString("Export Project Report")) {
+
+                public void actionPerformed(ActionEvent e) {
+                	reportExportAction(e);
+                }
+        };
+        
         public Action importNotesAction =
                         new AbstractAction(Local.getString("Import multiple notes")) {
 
@@ -143,6 +157,7 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
     JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
+    JMenuItem jMenuFileexportProjectReport = new JMenuItem(exportProjectReportAction);  //BG: Creates the jMenu for the File drop down
     JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
     JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
     JMenuItem jMenuFileExportNote = new JMenuItem(
@@ -453,6 +468,7 @@ public class AppFrame extends JFrame {
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExportPrj);
         jMenuFile.add(jMenuFileExportNote);
+        jMenuFile.add(jMenuFileexportProjectReport);  //BG: adds the jMenu to the actual File drop down
         jMenuFile.add(jMenuFileImportNote);
         jMenuFile.add(jMenuFileImportPrj);
         jMenuFile.addSeparator();
@@ -922,6 +938,79 @@ public class AppFrame extends JFrame {
                  ProjectExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
                                  dlg.splitChB.isSelected(), true, nument, dlg.titlesAsHeadersChB.isSelected(), false); 
                 }
+            
+            /**
+             * This method creates the dialog box for the user to save their work.
+             * They can choose their location and saving preferences. Also, this method 
+             * upon ReportGenerate method to produce a HTML report.
+             * 
+             * BG
+             * 
+             * @param e  --what is used for the method to be called
+             */
+            public void reportExportAction(ActionEvent e) {
+         
+                JFileChooser chooser = new JFileChooser();
+                chooser.setFileHidingEnabled(false);
+                chooser.setDialogTitle(Local.getString("Export Project Report"));
+                chooser.setAcceptAllFileFilterUsed(false);
+                chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                chooser.addChoosableFileFilter(
+                        new AllFilesFilter(AllFilesFilter.XHTML));
+                chooser.addChoosableFileFilter(new AllFilesFilter(AllFilesFilter.HTML));
+
+                String lastSel = (String) Context.get("LAST_SELECTED_EXPORT_FILE");
+                if (lastSel != null) {
+                        chooser.setCurrentDirectory(new File(lastSel));
+                }
+
+                ProjectExportDialog dlg =
+                        new ProjectExportDialog(
+                                App.getFrame(),
+                                Local.getString("Export Project Report"),
+                                chooser);
+                
+                String enc = (String) Context.get("EXPORT_FILE_ENCODING");
+                if (enc != null) {
+                        dlg.encCB.setSelectedItem(enc);
+                }
+             
+              
+                
+                Dimension dlgSize = new Dimension(550, 500);
+                dlg.setSize(dlgSize);
+                Dimension frmSize = App.getFrame().getSize();
+                Point loc = App.getFrame().getLocation();
+                dlg.setLocation(
+                        (frmSize.width - dlgSize.width) / 2 + loc.x,
+                        (frmSize.height - dlgSize.height) / 2 + loc.y);
+                dlg.setVisible(true);
+                
+                if (dlg.CANCELLED) {
+                        return;
+                }
+                
+                        Context.put(
+                                "LAST_SELECTED_EXPORT_FILE",
+                                chooser.getSelectedFile().getPath());
+                       
+                int ei = dlg.encCB.getSelectedIndex();
+                enc = null;
+                if (ei == 1) {
+                        enc = "UTF-8";
+                }
+                boolean nument = (ei == 2);
+                File f = chooser.getSelectedFile();
+                boolean xhtml =
+                        chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
+                 CurrentProject.save();
+                 ReportExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
+                                  nument); 
+                }
+            
+            
+            
+            
             
             protected void ppImport_actionPerformed(ActionEvent e) {
             
