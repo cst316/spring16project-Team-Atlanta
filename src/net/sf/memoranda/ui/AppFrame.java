@@ -34,6 +34,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
+import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.History;
 import net.sf.memoranda.Note;
@@ -622,7 +623,7 @@ public class AppFrame extends JFrame {
         CurrentProject.addProjectListener(new ProjectListener() {
 
             public void projectChange(Project prj, NoteList nl, TaskList tl,
-                    ResourcesList rl) {
+                    ResourcesList rl, ContactsList cl) {
             }
 
             public void projectWasChanged() {

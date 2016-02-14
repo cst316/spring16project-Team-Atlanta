@@ -24,6 +24,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.History;
 import net.sf.memoranda.NoteList;
@@ -132,7 +133,7 @@ public class ProcessPanel extends JPanel {
 			}
 		});
 		CurrentProject.addProjectListener(new ProjectListener() {
-			public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {
+			public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
 				newProcessB.setEnabled(CurrentDate.get().inPeriod(p.getStartDate(), p.getEndDate()));
 			}
 

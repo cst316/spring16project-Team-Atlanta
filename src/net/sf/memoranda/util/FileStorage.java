@@ -19,6 +19,8 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import net.sf.memoranda.ContactsList;
+import net.sf.memoranda.ContactsListImpl;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.Note;
 import net.sf.memoranda.NoteList;
@@ -505,4 +507,37 @@ public class FileStorage implements Storage {
 		        saveDocument(processlistDoc,JN_DOCPATH + prj.getID() + File.separator + ".processlist");
 	}
 
+    /**
+     * @author Moretti
+     * @see net.sf.memoranda.util.Storage#openContactsList(net.sf.memoranda.Project)
+     */
+    public ContactsList openContactsList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".contacts";
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println("[DEBUG] Open contacts list: " + fn);
+            return new ContactsListImpl(openDocument(fn), prj);
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New contact list created");
+            return new ContactsListImpl(prj);
+        }
+    }
+    /**
+     * @author Moretti
+     * @see net.sf.memoranda.util.Storage#storeContactsList(net.sf.memoranda.ContactsList, net.sf.memoranda.Project)
+     */
+    public void storeContactsList(ContactsList cl, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save contacts list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".contacts");
+        saveDocument(
+            cl.getXMLContent(),
+            JN_DOCPATH + prj.getID() + File.separator + ".contacts");
+    }
 }
