@@ -468,7 +468,7 @@ public class AppFrame extends JFrame {
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFileExportPrj);
         jMenuFile.add(jMenuFileExportNote);
-        jMenuFile.add(jMenuFileexportProjectReport);  //BG: adds the jMenu to the actual ile drop down
+        jMenuFile.add(jMenuFileexportProjectReport);  //BG: adds the jMenu to the actual File drop down
         jMenuFile.add(jMenuFileImportNote);
         jMenuFile.add(jMenuFileImportPrj);
         jMenuFile.addSeparator();
