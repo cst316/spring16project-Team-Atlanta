@@ -12,8 +12,6 @@ import net.sf.memoranda.Contact;
 import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.ContactsListImpl;
 import net.sf.memoranda.Project;
-import nu.xom.Document;
-import nu.xom.Element;
 
 /**
  * JUnit Test Class for Contacts implementation.

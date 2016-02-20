@@ -155,7 +155,7 @@ public class ResourcesTable extends JTable {
                 switch (col) {
                     case 0: return f.getName();
                     //Added code for the description field
-                    case 1: 
+                    case 1: return r.getDesc();
                     case 2: MimeType mt = MimeTypesList.getMimeTypeForFile(f.getName());
                             if (mt != null) return mt.getLabel();
                             else return "unknown";
@@ -169,7 +169,7 @@ public class ResourcesTable extends JTable {
                 if (col == 0)
                     return r.getPath();
                 else if (col == 1)
-                    return Local.getString("Internet shortcut");
+                    return r.getDesc();
                 else
                     return "";                
             }
@@ -182,6 +182,7 @@ public Class getColumnClass(int col) {
             switch (col) {
                 case 0 :
                 case 1 :
+                	return Class.forName("java.lang.String");
                 case 3 :
                     return Class.forName("java.lang.String");
                 case 2 :
