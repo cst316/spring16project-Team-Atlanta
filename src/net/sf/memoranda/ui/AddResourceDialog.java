@@ -165,6 +165,9 @@ public class AddResourceDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         areaPanel.add(urlField, gbc);
+
+        // Added panel elements for description field and separator
+        // Moretti - Feb. 2016
         gbc = new GridBagConstraints();
         gbc.gridx = 0; gbc.gridy = 4;
         gbc.gridwidth = 6;

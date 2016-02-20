@@ -55,7 +55,7 @@ public class ResourcesTable extends JTable {
     }
 
     void initColumsWidth() {
-    	//Change code ~ for(int i = 0: i < 5: i++) ~ to accomodate another column for Description
+    	//Change code ~ for(int i = 0: i < 5: i++) ~ to accommodate another column for Description
     	//
         for (int i = 0; i < 5; i++) {
             TableColumn column = getColumnModel().getColumn(i);
