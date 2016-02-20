@@ -19,6 +19,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -41,6 +42,8 @@ public class AddResourceDialog extends JDialog {
     JLabel jLabel2 = new JLabel();
     public JRadioButton inetShortcutRB = new JRadioButton();
     public JTextField urlField = new JTextField();
+    JLabel jLabel3 = new JLabel();
+    public JTextField descField = new JTextField();
     JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
     JButton okB = new JButton();
     JButton cancelB = new JButton();
@@ -162,6 +165,33 @@ public class AddResourceDialog extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         areaPanel.add(urlField, gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 6;
+        gbc.insets = new Insets(30, 5, 30, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        areaPanel.add(new JSeparator(JSeparator.HORIZONTAL), gbc);
+        jLabel3.setText(Local.getString("Description")+":  ");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 5;
+        gbc.insets = new Insets(5, 20, 5, 15);
+        gbc.anchor = GridBagConstraints.WEST;
+        areaPanel.add(jLabel3, gbc);
+        descField.setMinimumSize(new Dimension(4, 24));
+        descField.setPreferredSize(new Dimension(335, 24));
+        descField.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                urlField_caretUpdate(e);
+            }
+        });
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1; gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(5, 5, 0, 15);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        areaPanel.add(descField, gbc);
         this.getContentPane().add(areaPanel, BorderLayout.CENTER);
         
         okB.setEnabled(false);

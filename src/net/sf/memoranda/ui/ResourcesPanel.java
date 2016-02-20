@@ -282,17 +282,17 @@ public class ResourcesPanel extends JPanel {
             // if file if projectFile, than copy the file and change url.
             if (dlg.projectFileCB.isSelected()) {
             	fpath = copyFileToProjectDir(fpath);
-            	CurrentProject.getResourcesList().addResource(fpath, false, true);
+            	CurrentProject.getResourcesList().addResource(fpath, dlg.descField.getText(), false, true);
             }
             else
-            	CurrentProject.getResourcesList().addResource(fpath);            	     	
+            	CurrentProject.getResourcesList().addResource(fpath, dlg.descField.getText());            	     	
             
             resourcesTable.tableChanged();
         }
         else {
             if (!Util.checkBrowser())
                 return;
-            CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), true, false);
+            CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), dlg.descField.getText(), true, false);
             resourcesTable.tableChanged();
         }
     }
