@@ -489,7 +489,8 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	/**
 	 * Creates a action event so when the report button is pressed in
 	 * the project panels page it calls upon the reportExportAction in
-	 * the AppFrame class.
+	 * the AppFrame class. Added e to appFrame.reportExportAction(e); to
+	 * fix an error from previous push.
 	 * 
 	 * @param e - the action for the report button 
 	 */
