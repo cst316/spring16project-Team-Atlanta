@@ -23,9 +23,9 @@ public interface ResourcesList {
     
     Resource getResource(String path);
     
-    void addResource(String path, boolean isInternetShortcut, boolean isProjectFile);
+    void addResource(String path, String desc, boolean isInternetShortcut, boolean isProjectFile);
     
-    void addResource(String path);
+    void addResource(String path, String desc);
     
     //void addResource(String path, String taskId);
     

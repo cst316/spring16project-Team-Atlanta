@@ -15,6 +15,7 @@ package net.sf.memoranda;
 public class Resource {
     
     private String _path = null;	// the path to the file
+    private String _desc = null;	// the custom description
     private boolean _isInetShortcut = false; // true if Internet shortcut
     private boolean _isProjectFile = false;	// true if file is in project directory 
     /**
@@ -23,8 +24,9 @@ public class Resource {
      * @param isInetShortcut, if the resource is a internet shortcut.
      * @param isProjectFile, if file is copied to project directory.
      */
-    public Resource(String path, boolean isInetShortcut, boolean isProjectFile) {
+    public Resource(String path, String desc, boolean isInetShortcut, boolean isProjectFile) {
         _path = path;
+        _desc = desc;
         _isInetShortcut = isInetShortcut;
         _isProjectFile = isProjectFile;
     }
@@ -35,6 +37,14 @@ public class Resource {
     
     public String getPath() {
         return _path;
+    }
+    
+    /**
+     * @author Moretti
+     * Getter for new description attribute.
+     */
+    public String getDesc() {
+        return _desc;
     }
     
     public boolean isInetShortcut() {
