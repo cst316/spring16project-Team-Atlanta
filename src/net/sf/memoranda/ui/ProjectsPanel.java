@@ -495,7 +495,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	 */
 	void genertateReportAction(ActionEvent e) {
 		AppFrame appFrame = new AppFrame();
-		appFrame.reportExportAction();
+		appFrame.reportExportAction(e);
 	}
 
 }
