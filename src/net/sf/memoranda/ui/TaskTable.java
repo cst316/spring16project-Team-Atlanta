@@ -111,7 +111,7 @@ public class TaskTable extends JTable {
         });
         CurrentProject.addProjectListener(new ProjectListener() {
             public void projectChange(Project p, NoteList nl, TaskList tl,
-                    ResourcesList rl, ContactsList cl) {
+                    ResourcesList rl, ContactsList cl, ProcessList pl) {
             }
 
             public void projectWasChanged() {

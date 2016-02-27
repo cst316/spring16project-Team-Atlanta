@@ -16,6 +16,7 @@ import javax.swing.table.TableColumn;
 import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.NoteList;
+import net.sf.memoranda.ProcessList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.Resource;
@@ -45,7 +46,7 @@ public class ResourcesTable extends JTable {
         initColumsWidth();
         //this.setModel(new ResourcesTableModel());
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {                
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl, ProcessList pl) {                
                
             }
             public void projectWasChanged() {

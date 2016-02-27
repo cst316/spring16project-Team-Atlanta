@@ -1,106 +1,124 @@
+/**
+ * ProcessImpl.java
+ * Created on 23 Feb. 2016
+ * Package: net.sf.memoranda
+ * 
+ * Process Implementation  class.
+ * @author Meyung
+ *
+ */
+
 package net.sf.memoranda;
 
-import java.util.ArrayList;
+public class ProcessImpl implements Process {
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-
-@SuppressWarnings("rawtypes")
-public class ProcessImpl implements Process, Comparable {
-
-	private Element processElement = null;
-	private ProcessList processList = null;
-	private ArrayList taskList = new ArrayList();
-	
-	/**
-     * Constructor for DefaultProcess.
-	 * @return 
-     */
-    public ProcessImpl(Element processElement, ProcessList tl) {
-    	this.processElement = processElement;
-        processList = tl;
-    }
+	private String _processName = null;		// the name of the process
+	private String _scrumMaster = null;		// the Scrum Master for the process
+	private String _productOwner = null; 	// the Product Owner for the process
+	private String _teamMembers = null; 	// the Team Members in the process
+	private String _sprintPlanningMeeting = null;	// the Sprint Planning Meeting for the process
+	private String _dailyStandUp = null; 	// the Daily Stand-Up for the process
+	private String _sprintReview = null;	// the Sprint Review for the process
+	private String _sprintRetrospective = null;	 // the Sprint Retrospective for the process
 
 	/**
-     * 
-     * @return processElement
-     */
-    public Element getProcessElement() {
-    	return processElement;
-    }
-
-	public int compareTo(Object o) {
-		/*Task task = (Task) o;
-	 	if(getRate() > task.getRate())
-			return 1;
-		else if(getRate() < task.getRate())
-			return -1;
-		else 
-			return 0;*/
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @return boolean value
+	 * Constructor for ProcessImpl
+	 * @param processName The name of the process
+	 * @param scrumMaster The Scrum Master for the process
+	 * @param productOwner The Product Owner for the process
+	 * @param teamMembers The Team Members in the process
+	 * @param sprintPlanningMeeting The Sprint Planning Meeting for the process
+	 * @param dailyStandUp The Daily Stand-Up for the process
+	 * @param sprintReview The Sprint Review for the process
+	 * @param sprintRetrospective The Sprint Retrospective for the process
 	 */
-	@SuppressWarnings("unchecked")
-	public boolean addTaskToProcess(Task task) {
-		if(taskList.contains(task)) {
-			return false;
-		}
-		else{
-			taskList.add(task);
-		}
-		return true;
+	public ProcessImpl(String processName, String scrumMaster, String productOwner, String teamMembers, String sprintPlanningMeeting, String dailyStandUp, String sprintReview, String sprintRetrospective) {
+		_processName = processName;
+		_scrumMaster = scrumMaster;
+		_productOwner = productOwner;
+		_teamMembers = teamMembers;
+		_sprintPlanningMeeting = sprintPlanningMeeting;
+		_dailyStandUp = dailyStandUp;
+		_sprintReview = sprintReview;
+		_sprintRetrospective = sprintRetrospective;
 	}
 
 	/**
-	 * @return boolean value
+	 * Empty Constructor for ProcessImpl
 	 */
-	public boolean removeTaskFromProcess(Task task) {
-		if(taskList.contains(task)) {
-			taskList.remove(task);
-			return true;
-		}
-		return false;
+	public ProcessImpl() {
+		_processName = null;
+		_scrumMaster = null;
+		_productOwner = null;
+		_teamMembers = null;
+		_sprintPlanningMeeting = null;
+		_dailyStandUp = null;
+		_sprintReview = null;
+		_sprintRetrospective = null;
 	}
 
-	public int getPriority() {
-		 Attribute pa = processElement.getAttribute("priority");
-	        if (pa == null){
-	            return Task.PRIORITY_NORMAL;
-	        }
-	        return new Integer(pa.getValue()).intValue();
-	}
-
-	public boolean setPriority(int priority) {
-		setAttr("priority", String.valueOf(priority));
-		return true;
-	}
-
+	/**
+	 * Getter for processName
+	 * @returns The name of the process
+	 */
 	public String getProcessName() {
-		 Attribute pa = processElement.getAttribute("processname");
-	        if (pa == null){
-	            return Process.DEFAULT_PROCESS_NAME;
-	        }
-	        return new String(pa.getValue());
+		return _processName;
 	}
 
-	public boolean setProcessName(String name) {
-		setAttr("processName", String.valueOf(name));
-		return true;
+	/**
+	 * Getter for scrumMaster
+	 * @returns The Scrum Master for the process
+	 */
+	public String getScrumMaster() {
+		return _scrumMaster;
 	}
-	
-    private void setAttr(String a, String value) {
-        Attribute attr = processElement.getAttribute(a);
-        if (attr == null)
-           processElement.addAttribute(new Attribute(a, value));
-        else
-            attr.setValue(value);
-    }
-    
-    public String getID() {
-        return processElement.getAttribute("id").getValue();
-    }
+
+	/**
+	 * Getter for productOwner
+	 * @returns The Product Owner for the process
+	 */
+	public String getProductOwner() {
+		return _productOwner;
+	}
+
+	/**
+	 * Getter for teamMembers
+	 * @returns The Team Members in the process
+	 */
+	public String getTeamMembers() {
+		return _teamMembers;
+	}
+
+	/**
+	 * Getter for sprintPlanningMeeting
+	 * @returns The Sprint Planning Meeting for the process
+	 */
+	public String getSprintPlanningMeeting() {
+		return _sprintPlanningMeeting;
+	}
+
+	/**
+	 * Getter for dailyStandUp
+	 * @returns The Daily Stand-Up for the process
+	 */
+	public String getDailyStandUp() {
+		return _dailyStandUp;
+	}
+
+	/**
+	 * Getter for sprintReview
+	 * @returns The Sprint Review for the process
+	 */
+	public String getSprintReview() {
+		return _sprintReview;
+	}
+
+	/**
+	 * Getter for sprintRetrospective
+	 * @returns The Sprint Retrospective for the process
+	 */
+	public String getSprintRetrospective() {
+		return _sprintRetrospective;
+	}
+
 }

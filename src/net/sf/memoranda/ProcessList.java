@@ -1,25 +1,29 @@
 /**
- * TaskList.java
- * Created on 21.02.2003, 12:25:16 Alex
+ * ProcessList.java
+ * Created on 23 Feb. 2016
  * Package: net.sf.memoranda
  * 
- * @author Alex V. Alishevskikh, alex@openmechanics.net
- * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
+ * Process List interface.
+ * @author Meyung
  */
-package net.sf.memoranda;
-import java.util.Collection;
 
-import net.sf.memoranda.date.CalendarDate;
-/**
- * 
- */
+package net.sf.memoranda;
+
+import java.util.Vector;
+import nu.xom.Document;
+
 public interface ProcessList {
 
-	Project getProject();
-    Process getProcess(String id);
+	Vector<ProcessImpl> getAllProcesses();
 
-    Process createProcess(CalendarDate startDate, CalendarDate endDate, String text, int priority, long effort, String description, String parentProcessId);
-	
-    nu.xom.Document getXMLContent();
+	Process getProcess(String processName);
+
+	void addProcess(String processName, String scrumMaster, String productOwner, String teamMembers, String sprintPlanningMeeting, String dailyStandUp, String sprintReview, String sprintRetrospective);
+
+	void removeProcess(String processName);
+
+	int getAllProcessCount();
+
+	Document getXMLContent();
 
 }

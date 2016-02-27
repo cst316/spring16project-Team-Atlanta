@@ -1,3 +1,12 @@
+/**
+ * ProcessPanel.java
+ * Created on 23 Feb. 2016
+ * Package: net.sf.memoranda
+ * 
+ * Process Panel class.
+ * @author Meyung
+ *
+ */
 package net.sf.memoranda.ui;
 
 import java.awt.BorderLayout;
@@ -7,11 +16,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Date;
-import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -24,74 +28,44 @@ import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sf.memoranda.ContactsList;
+import net.sf.memoranda.Contact;
 import net.sf.memoranda.CurrentProject;
-import net.sf.memoranda.History;
-import net.sf.memoranda.NoteList;
-import net.sf.memoranda.Project;
-import net.sf.memoranda.ProjectListener;
-import net.sf.memoranda.ResourcesList;
-import net.sf.memoranda.Task;
-import net.sf.memoranda.TaskList;
-import net.sf.memoranda.date.CalendarDate;
-import net.sf.memoranda.date.CurrentDate;
-import net.sf.memoranda.date.DateListener;
 import net.sf.memoranda.util.Context;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
-import net.sf.memoranda.util.Util;
+import net.sf.memoranda.ProcessListImpl;
 
-/**
- * 
- * @author Meyung 
- * this code was based off of the TaskPanel.java class
- */
 public class ProcessPanel extends JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
-	JButton historyBackB = new JButton();
 	JToolBar processToolBar = new JToolBar();
-	JButton historyForwardB = new JButton();
 	JButton newProcessB = new JButton();
-
+	JButton removeProcessB = new JButton();
+	JScrollPane scrollPane = new JScrollPane();
+	ProcessTable processTable = new ProcessTable();
+	JPopupMenu processPPMenu = new JPopupMenu();
+	JMenuItem ppRun = new JMenuItem();
+	JMenuItem ppRemovePro = new JMenuItem();
+	JMenuItem ppNewPro = new JMenuItem();
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 
-	JScrollPane scrollPane = new JScrollPane();
-	DailyItemsPanel parentPanel = null;
 
-	public ProcessPanel(DailyItemsPanel _parentPanel) {
+	public ProcessPanel() {
 		try {
-			parentPanel = _parentPanel;
 			jbInit();
-		} catch (Exception ex) {
+		} 
+		catch (Exception ex) 
+		{
 			ex.printStackTrace();
 		}
 	}
 
+	/**
+	 * jbInit() This method sets up the user interface for the Process UI.
+	 * 
+	 * @throws Exception
+	 */
 	void jbInit() throws Exception {
 		processToolBar.setFloatable(false);
-
-		historyBackB.setAction(History.historyBackAction);
-		historyBackB.setFocusable(false);
-		historyBackB.setBorderPainted(false);
-		historyBackB.setToolTipText(Local.getString("History back"));
-		historyBackB.setRequestFocusEnabled(false);
-		historyBackB.setPreferredSize(new Dimension(24, 24));
-		historyBackB.setMinimumSize(new Dimension(24, 24));
-		historyBackB.setMaximumSize(new Dimension(24, 24));
-		historyBackB.setText("");
-
-		historyForwardB.setAction(History.historyForwardAction);
-		historyForwardB.setBorderPainted(false);
-		historyForwardB.setFocusable(false);
-		historyForwardB.setPreferredSize(new Dimension(24, 24));
-		historyForwardB.setRequestFocusEnabled(false);
-		historyForwardB.setToolTipText(Local.getString("History forward"));
-		historyForwardB.setMinimumSize(new Dimension(24, 24));
-		historyForwardB.setMaximumSize(new Dimension(24, 24));
-		historyForwardB.setText("");
-
-		newProcessB
-				.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
+		newProcessB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
 		newProcessB.setEnabled(true);
 		newProcessB.setMaximumSize(new Dimension(24, 24));
 		newProcessB.setMinimumSize(new Dimension(24, 24));
@@ -105,74 +79,135 @@ public class ProcessPanel extends JPanel {
 			}
 		});
 		newProcessB.setBorderPainted(false);
-
+		processTable.setMaximumSize(new Dimension(32767, 32767));
+		processTable.setRowHeight(24);
+		removeProcessB.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
+		removeProcessB.setEnabled(true);
+		removeProcessB.setMaximumSize(new Dimension(24, 24));
+		removeProcessB.setMinimumSize(new Dimension(24, 24));
+		removeProcessB.setToolTipText(Local.getString("Delete Process"));
+		removeProcessB.setRequestFocusEnabled(false);
+		removeProcessB.setPreferredSize(new Dimension(24, 24));
+		removeProcessB.setFocusable(false);
+		removeProcessB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeProcessB_actionPerformed(e);
+			}
+		});
 		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
 		ppShowActiveOnlyChB.setText(Local.getString("Show Active only"));
-		
 		boolean isShao = (Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
 				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
 		ppShowActiveOnlyChB.setSelected(isShao);
-		
 		this.setLayout(borderLayout1);
 		scrollPane.getViewport().setBackground(Color.white);
-		
 		this.add(scrollPane, BorderLayout.CENTER);
-		processToolBar.add(historyBackB, null);
-		processToolBar.add(historyForwardB, null);
 		processToolBar.addSeparator(new Dimension(8, 24));
-
 		processToolBar.add(newProcessB, null);
 		processToolBar.addSeparator(new Dimension(8, 24));
-
+		processToolBar.add(removeProcessB, null);
+		processToolBar.addSeparator(new Dimension(8, 24));
 		this.add(processToolBar, BorderLayout.NORTH);
-		
-		CurrentDate.addDateListener(new DateListener() {
-			public void dateChange(CalendarDate d) {
-				newProcessB
-						.setEnabled(d.inPeriod(CurrentProject.get().getStartDate(), CurrentProject.get().getEndDate()));
+
+		processTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				boolean enbl = (processTable.getRowCount() > 0) && (processTable.getSelectedRow() > -1);
+
+				removeProcessB.setEnabled(enbl); ppRemovePro.setEnabled(enbl);
+				ppRun.setEnabled(enbl);
 			}
 		});
-		CurrentProject.addProjectListener(new ProjectListener() {
-			public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
-				newProcessB.setEnabled(CurrentDate.get().inPeriod(p.getStartDate(), p.getEndDate()));
-			}
 
-			public void projectWasChanged() {
-				// taskTable.setCurrentRootTask(null); //XXX
+		processPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
+		ppRemovePro.setFont(new java.awt.Font("Dialog", 1, 11));
+		ppRemovePro.setText(Local.getString("Remove process"));
+		ppRemovePro.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppRemovePro_actionPerformed(e);
 			}
+		});
+		ppRemovePro.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_remove.png")));
+		ppRemovePro.setEnabled(false);
+		ppNewPro.setFont(new java.awt.Font("Dialog", 1, 11));
+		ppNewPro.setText(Local.getString("New contact")+"...");
+		ppNewPro.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppNewPro_actionPerformed(e);
+			}
+		});
+		ppNewPro.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_new.png")));
+
+		processToolBar.add(ppNewPro, null);
+		processToolBar.add(ppRemovePro, null);
+		this.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.getViewport().add(processTable, null);
+		this.add(processToolBar, BorderLayout.NORTH);
+		processPPMenu.add(ppRun);
+		processPPMenu.addSeparator();
+		processPPMenu.add(ppNewPro);
+		processPPMenu.add(ppRemovePro);
+		processPPMenu.addSeparator();
+
+		// remove resources using the DEL key
+		processTable.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e){
+				if(processTable.getSelectedRows().length>0 
+						&& e.getKeyCode()==KeyEvent.VK_DELETE)
+					ppRemovePro_actionPerformed(null);
+			}
+			public void	keyReleased(KeyEvent e){}
+			public void keyTyped(KeyEvent e){} 
 		});
 	}
 
 	void newProcessB_actionPerformed(ActionEvent e) {
 		ProcessDialog dlg = new ProcessDialog(App.getFrame(), Local.getString("New Process"));
-
 		Dimension frmSize = App.getFrame().getSize();
 		Point loc = App.getFrame().getLocation();
-		dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
-		dlg.endDate.getModel().setValue(CurrentDate.get().getDate());
-		dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x,
-				(frmSize.height - dlg.getSize().height) / 2 + loc.y);
+		dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
 		dlg.setVisible(true);
 		if (dlg.CANCELLED)
 			return;
-		CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-		CalendarDate ed;
-		if (dlg.chkEndDate.isSelected())
-			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-		else
-			ed = null;
-		long effort = Util.getMillisFromHours(dlg.effortField.getText());
-		//Process newProcess = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(),
-		//				dlg.priorityCB.getSelectedIndex(), effort, dlg.descriptionField.getText(), null);
-		//newTask.setProgress(((Integer) dlg.progress.getValue()).intValue());
-		CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
-		parentPanel.updateIndicators();
+		CurrentProject.getProcessList().addProcess(dlg.txtProcessName.getText(), dlg.txtScrumMasterName.getText(), dlg.txtProductOwnerName.getText(),
+				dlg.txtTeamMemberNames.getText(), dlg.txtSprintPlanningMeeting.getText(), dlg.txtDailyStandUp.getText(),
+				dlg.txtSprintReview.getText(), dlg.txtSprintRetrospective.getText());
+		processTable.tableChanged();
 	}
-	
-	void ppNewTask_actionPerformed(ActionEvent e) {
+
+	void removeProcessB_actionPerformed(ActionEvent e) {
+		int[] toRemove = processTable.getSelectedRows();
+		String msg = "";
+		if (toRemove.length == 1)
+			msg =
+			Local.getString("Remove the process")
+			+ "\n'"
+			+ processTable.getModel().getValueAt(toRemove[0], 0)
+			+ "'";
+
+		else
+			msg = Local.getString("Remove") + " " + toRemove.length + " " + Local.getString("contacts");
+		msg +=
+				"\n"
+						+ Local.getString("Are you sure?");
+		int n =
+				JOptionPane.showConfirmDialog(
+						App.getFrame(),
+						msg,
+						Local.getString("Remove process"),
+						JOptionPane.YES_NO_OPTION);
+		if (n != JOptionPane.YES_OPTION)
+			return;
+		for (int i = 0; i < toRemove.length; i++) {        	
+			CurrentProject.getProcessList().removeProcess(
+					((net.sf.memoranda.Process) processTable.getModel().getValueAt(toRemove[i], ProcessTable._PROCESS)).getProcessName());
+		}
+		processTable.tableChanged();
+	}
+
+	void ppRemovePro_actionPerformed(ActionEvent e) {
+		removeProcessB_actionPerformed(e);
+	}
+	void ppNewPro_actionPerformed(ActionEvent e) {
 		newProcessB_actionPerformed(e);
 	}
-
-	
-
 }

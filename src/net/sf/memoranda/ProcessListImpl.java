@@ -1,169 +1,102 @@
 /**
- * TaskListImpl.java
- * Created on 21.02.2003, 12:29:54 Alex
+ * ProcessListImpl.java
+ * Created on 23 Feb. 2016
  * Package: net.sf.memoranda
  * 
- * @author Alex V. Alishevskikh, alex@openmechanics.net
- * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
+ * Process List Implementation Class.
+ * @author Meyung
  */
+
 package net.sf.memoranda;
 
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
-
-import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
-import nu.xom.Node;
-import nu.xom.Nodes;
-//import nu.xom.converters.*;
-//import org.apache.xerces.dom.*;
-//import nux.xom.xquery.XQueryUtil;
 
-/**
- * 
- */
 public class ProcessListImpl implements ProcessList {
 
-    private Project _project = null;
-    private Document _doc = null;
-    private Element _root = null;
-	
-	/*
-	 * Hastable of "task" XOM elements for quick searching them by ID's
-	 * (ID => element) 
-	 */
-	private Hashtable elements = new Hashtable();
-    
-    /**
-     * Constructor for ProcessListImpl.
-     */
-    public ProcessListImpl(Document doc, Project prj) {
-        _doc = doc;
-        _root = _doc.getRootElement();
-        _project = prj;
-		buildElements(_root);
-    }
-    
-    public ProcessListImpl(Project prj) {            
-            _root = new Element("tasklist");
-            _doc = new Document(_root);
-            _project = prj;
-    }
-    
-	public Project getProject() {
-		return _project;
-	}
-		
-	/*
-	 * Build the hashtable recursively
-	 */
-	private void buildElements(Element parent) {
-		Elements els = parent.getChildElements("task");
-		for (int i = 0; i < els.size(); i++) {
-			Element el = els.get(i);
-			elements.put(el.getAttribute("id").getValue(), el);
-			buildElements(el);
-		}
-	}
+	private Project _project = null;
+	private Document _doc = null;
+	private Element _root = null;
 
-    public Process createProcess(CalendarDate startDate, CalendarDate endDate, String text, int priority, long effort, String description, String parentProcessId) {
-        Element el = new Element("task");
-        el.addAttribute(new Attribute("startDate", startDate.toString()));
-        el.addAttribute(new Attribute("endDate", endDate != null? endDate.toString():""));
-		String id = Util.generateId();
-        el.addAttribute(new Attribute("id", id));
-        el.addAttribute(new Attribute("progress", "0"));
-        el.addAttribute(new Attribute("effort", String.valueOf(effort)));
-        el.addAttribute(new Attribute("priority", String.valueOf(priority)));
-                
-        Element txt = new Element("text");
-        txt.appendChild(text);
-        el.appendChild(txt);
 
-        Element desc = new Element("description");
-        desc.appendChild(description);
-        el.appendChild(desc);
-
-        if (parentProcessId == null) {
-            _root.appendChild(el);
-        }
-        else {
-            Element parent = getProcessElement(parentProcessId);
-            parent.appendChild(el);
-        }
-        
-		elements.put(id, el);
-		
-        Util.debug("Created process with parent " + parentProcessId);
-        
-        return new ProcessImpl(el, this);
-    }
-	
 	/**
-     * @see net.sf.memoranda.TaskList#removeTask(import net.sf.memoranda.Task)
-     */
+	 * Constructor for ProcessListImpl.
+	 * @param doc
+	 * @param prj
+	 */
+	public ProcessListImpl(Document doc, Project prj) {
+		_doc = doc;
+		_root = _doc.getRootElement();
+		_project = prj;
+	}
 
-    public void removeProcess(Process process) {
-        elements.remove(process.getID());
-    }
+	public ProcessListImpl(Project prj) {            
+		_root = new Element("process-list");
+		_doc = new Document(_root);
+		_project = prj;
+	}	
 
-    public Process getProcess(String id) {
-        Util.debug("Getting process " + id);          
-        return new ProcessImpl(getProcessElement(id), this);          
-    }
-    
-	    /**
-     * @see net.sf.memoranda.TaskList#getXMLContent()
-     */	 
-    public Document getXMLContent() {
-        return _doc;
-    }
-          
-    /*
-     * private methods below this line
-     */
-    private Element getProcessElement(String id) {
-		Element el = (Element)elements.get(id);
-		if (el == null) {
-			Util.debug("Process " + id + " cannot be found in project " + _project.getTitle());
+	public Vector<ProcessImpl> getAllProcesses() {
+		Vector<ProcessImpl> processVector = new Vector<ProcessImpl>();
+		Elements cs = _root.getChildElements("process");
+		for (int i = 0; i < cs.size(); i++) {
+			processVector.add(new ProcessImpl(cs.get(i).getAttribute("processName").getValue(),
+					cs.get(i).getAttribute("scrumMaster").getValue(), cs.get(i).getAttribute("productOwner").getValue(),
+					cs.get(i).getAttribute("teamMembers").getValue(),cs.get(i).getAttribute("sprintPlanningMeeting").getValue(),
+					cs.get(i).getAttribute("dailyStandUp").getValue(),cs.get(i).getAttribute("sprintReview").getValue(),
+					cs.get(i).getAttribute("sprintRetrospective").getValue()));
 		}
-		return el;
-    }
-    
-    private Collection getAllRootProcesses() {
-        Elements processes = _root.getChildElements("process");
-        return convertToProcessObjects(processes);    	    		
-    }
-    
-    private Collection convertToProcessObjects(Elements processes) {
-        Vector v = new Vector();
+		return processVector;
+	}
 
-        for (int i = 0; i < processes.size(); i++) {
-            Process t = new ProcessImpl(processes.get(i), this);
-            v.add(t);
-        }
-        return v;
-    }
-
-    private boolean isActive(Task t,CalendarDate date) {
-    	if ((t.getStatus(date) == Task.ACTIVE) || (t.getStatus(date) == Task.DEADLINE) || (t.getStatus(date) == Task.FAILED)) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-    }
-
-	public Collection getTopLevelTasks() {
-		// TODO Auto-generated method stub
+	public Process getProcess(String processName) {
+		Elements cs = _root.getChildElements("process");
+		for (int i = 0; i < cs.size(); i++)
+			if (cs.get(i).getAttribute("processName").getValue().equals(processName))
+				return new ProcessImpl(cs.get(i).getAttribute("processName").getValue(),
+						cs.get(i).getAttribute("scrumMaster").getValue(), cs.get(i).getAttribute("productOwner").getValue(),
+						cs.get(i).getAttribute("teamMembers").getValue(),cs.get(i).getAttribute("sprintPlanningMeeting").getValue(),
+						cs.get(i).getAttribute("dailyStandUp").getValue(),cs.get(i).getAttribute("sprintReview").getValue(),
+						cs.get(i).getAttribute("sprintRetrospective").getValue());
 		return null;
 	}
 
+	public void addProcess(String processName, String scrumMaster, String productOwner, String teamMembers, String sprintPlanningMeeting, String dailyStandUp, String sprintReview, String sprintRetrospective) {
+		Element el = new Element("process");
+		el.addAttribute(new Attribute("id", Util.generateId()));
+		el.addAttribute(new Attribute("processName", processName));  
+		el.addAttribute(new Attribute("scrumMaster", scrumMaster));
+		el.addAttribute(new Attribute("productOwner", productOwner));
+		el.addAttribute(new Attribute("teamMembers", teamMembers));
+		el.addAttribute(new Attribute("sprintPlanningMeeting", sprintPlanningMeeting));
+		el.addAttribute(new Attribute("dailyStandUp", dailyStandUp));
+		el.addAttribute(new Attribute("sprintReview", sprintReview));
+		el.addAttribute(new Attribute("sprintRetrospective", sprintRetrospective));
+		_root.appendChild(el);
+	}
+
+	public void addProcess(String processName) {
+		addProcess(processName, "", "", "", "", "", "", "");
+	}
+
+	public void removeProcess(String processName) {
+		Elements cs = _root.getChildElements("process");
+		for (int i = 0; i < cs.size(); i++)
+			if (cs.get(i).getAttribute("processName").getValue().equals(processName)) {
+				_root.removeChild(cs.get(i));
+			}
+	}
+
+	public int getAllProcessCount() {
+		return _root.getChildElements("process").size();
+	}
+
+	public Document getXMLContent() {
+		return _doc;
+	}
 
 }

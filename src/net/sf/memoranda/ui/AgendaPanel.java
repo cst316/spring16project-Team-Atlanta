@@ -27,6 +27,7 @@ import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.History;
 import net.sf.memoranda.NoteList;
+import net.sf.memoranda.ProcessList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ProjectManager;
@@ -254,7 +255,8 @@ public class AgendaPanel extends JPanel {
 					NoteList nl,
 					TaskList tl,
 					ResourcesList rl,
-					ContactsList cl) {
+					ContactsList cl,
+					ProcessList pl) {
 			}
 
 			public void projectWasChanged() {
