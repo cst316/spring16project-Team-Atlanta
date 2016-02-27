@@ -1007,7 +1007,7 @@ public class AppFrame extends JFrame {
                 boolean xhtml =
                         chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
 
-        				String HTML = new ReportExporter(CurrentProject.getTaskList(), CurrentProject.getNoteList()).toHTML();
+        				String HTML = new ReportExporter(CurrentProject.getTaskList(), CurrentProject.getNoteList()).toHtml();
         				FileWriter fWriter = null;
         				BufferedWriter writer = null;
         				try {
