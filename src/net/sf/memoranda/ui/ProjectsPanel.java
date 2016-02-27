@@ -128,7 +128,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		});
 		
 		//Creates the features for the reportButton; BG
-		reportButton.setMaximumSize(new Dimension(34, 20));
+		reportButton.setMaximumSize(new Dimension(30, 20));
 		reportButton.setMinimumSize(new Dimension(24, 10));
 		reportButton.setOpaque(false);
 		reportButton.setPreferredSize(new Dimension(24, 20));
