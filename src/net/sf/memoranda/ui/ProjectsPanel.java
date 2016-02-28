@@ -44,8 +44,6 @@ import net.sf.memoranda.TaskList;
 import net.sf.memoranda.date.CalendarDate;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.date.DateListener;
-import net.sf.memoranda.util.Context;
-import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.*;
 
 /*$Id: ProjectsPanel.java,v 1.14 2005/01/04 09:59:22 pbielen Exp $*/
@@ -56,6 +54,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	BorderLayout borderLayout2 = new BorderLayout();
 	JPanel buttonsPanel = new JPanel();
 	JButton toggleButton = new JButton();
+	public JButton reportButton = new JButton(); //BG: Creates the report Button
 	FlowLayout flowLayout1 = new FlowLayout();
 	Vector expListeners = new Vector();
 	boolean expanded = false;
@@ -67,6 +66,13 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		new ImageIcon(
 			net.sf.memoranda.ui.AppFrame.class.getResource(
 				"resources/icons/coll_panel.png"));
+	
+	//Creates the image that is displayed for the report button
+	ImageIcon reportGen =
+			new ImageIcon(
+				net.sf.memoranda.ui.AppFrame.class.getResource(
+					"resources/icons/report.png"));
+	
 	JLabel curProjectTitle = new JLabel();
 	Component component1;
 	JPopupMenu projectsPPMenu = new JPopupMenu();
@@ -120,12 +126,33 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				toggleButton_actionPerformed(null);
 			}
 		});
+		
+		//Creates the features for the reportButton; BG
+		reportButton.setMaximumSize(new Dimension(34, 20));
+		reportButton.setMinimumSize(new Dimension(24, 10));
+		reportButton.setOpaque(false);
+		reportButton.setPreferredSize(new Dimension(24, 20));
+		reportButton.setBorderPainted(false);
+		reportButton.setFocusPainted(false);
+		reportButton.setMargin(new Insets(0, 0, 0, 0));
+		reportButton.setBounds(24,24,50,24);
+		reportButton.setToolTipText(Local.getString("Generate Project Report"));
+		reportButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				genertateReportAction(null);
+			}
+		});
+		reportButton.setIcon(
+			new ImageIcon(
+				net.sf.memoranda.ui.AppFrame.class.getResource(
+					"resources/icons/report.png")));
+		
 
 		toggleButton.setIcon(expIcon);
 		toggleButton.setMargin(new Insets(0, 0, 0, 0));
 		buttonsPanel.setMinimumSize(new Dimension(70, 22));
 		buttonsPanel.setOpaque(false);
-		buttonsPanel.setPreferredSize(new Dimension(80, 22));
+		buttonsPanel.setPreferredSize(new Dimension(90, 22));
 		buttonsPanel.setRequestFocusEnabled(false);
 		buttonsPanel.setLayout(flowLayout1);
 		toolbarPanel.setBackground(SystemColor.textHighlight);
@@ -229,6 +256,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		topBar.add(toolbarPanel, null);
 		toolbarPanel.add(buttonsPanel, BorderLayout.EAST);
 		buttonsPanel.add(toggleButton, null);
+		buttonsPanel.add(reportButton, null); //BG: adds the report button to the project panel
 		toolbarPanel.add(curProjectTitle, BorderLayout.CENTER);
 		projectsPPMenu.add(ppOpenProject);
 		projectsPPMenu.addSeparator();
@@ -456,6 +484,18 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		ppDeleteProject.setEnabled(enabled);
 		ppOpenProject.setEnabled(enabled);
 		ppProperties.setEnabled(enabled);		
+	}
+	
+	/**
+	 * Creates a action event so when the report button is pressed in
+	 * the project panels page it calls upon the reportExportAction in
+	 * the AppFrame class.
+	 * 
+	 * @param e - the action for the report button 
+	 */
+	void genertateReportAction(ActionEvent e) {
+		AppFrame appFrame = new AppFrame();
+		appFrame.reportExportAction(e);
 	}
 
 }

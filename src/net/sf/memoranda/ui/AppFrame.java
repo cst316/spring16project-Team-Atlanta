@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -1004,9 +1006,19 @@ public class AppFrame extends JFrame {
                 File f = chooser.getSelectedFile();
                 boolean xhtml =
                         chooser.getFileFilter().getDescription().indexOf("XHTML") > -1;
-                 CurrentProject.save();
-                 ReportExporter.export(CurrentProject.get(), chooser.getSelectedFile(), enc, xhtml, 
-                                  nument); 
+
+        				String HTML = new ReportExporter(CurrentProject.getTaskList(), CurrentProject.getNoteList()).toHtml();
+        				FileWriter fWriter = null;
+        				BufferedWriter writer = null;
+        				try {
+        					fWriter = new FileWriter(chooser.getSelectedFile()+".html",true);
+        					writer = new BufferedWriter(fWriter);
+        					writer.write(HTML);
+        					writer.newLine(); 
+        					writer.close(); 
+        				} catch (Exception ex) {
+        					ex.printStackTrace();
+        				}
                 }
             
             
