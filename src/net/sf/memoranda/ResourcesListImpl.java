@@ -135,7 +135,4 @@ public class ResourcesListImpl implements ResourcesList {
         return v;
     }*/
     
-    /**
-     * 
-     */
 }

@@ -38,7 +38,12 @@ public class Resource {
     public String getPath() {
         return _path;
     }
-    
+
+    /**
+     * @author Moretti
+     * Getter for new description attribute.
+     */
+
     public String getDesc() {
         return _desc;
     }
