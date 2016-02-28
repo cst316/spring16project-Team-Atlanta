@@ -94,6 +94,18 @@ public class ResourcesListImpl implements ResourcesList {
     }
 
     /**
+     *  @author MMills7
+     */
+    public void editResourceDesc(String path, String desc){
+    	Elements rs = _root.getChildElements("resource");
+        for (int i = 0; i < rs.size(); i++){
+            if (rs.get(i).getAttribute("path").getValue().equals(path)) {
+            	rs.get(i).addAttribute(new Attribute("desc", desc));
+           }
+        }
+     }
+
+    /**
      * @see net.sf.memoranda.ResourcesList#removeResource(java.lang.String)
      */
     public void removeResource(String path) {
