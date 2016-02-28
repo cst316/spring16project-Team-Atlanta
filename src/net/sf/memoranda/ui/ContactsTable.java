@@ -23,6 +23,7 @@ import net.sf.memoranda.Contact;
 import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.NoteList;
+import net.sf.memoranda.ProcessList;
 import net.sf.memoranda.Project;
 import net.sf.memoranda.ProjectListener;
 import net.sf.memoranda.ResourcesList;
@@ -50,7 +51,7 @@ public class ContactsTable extends JTable {
         this.setFont(new Font("Dialog",0,11));
         initColumsWidth();
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {                
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl, ProcessList pl) {                
                
             }
             public void projectWasChanged() {

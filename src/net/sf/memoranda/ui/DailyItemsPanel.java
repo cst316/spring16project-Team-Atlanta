@@ -26,6 +26,7 @@ import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.ContactsList;
 import net.sf.memoranda.CurrentNote;
 import net.sf.memoranda.NoteListener;
+import net.sf.memoranda.ProcessList;
 import net.sf.memoranda.EventNotificationListener;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.History;
@@ -64,7 +65,7 @@ public class DailyItemsPanel extends JPanel {
     JLabel currentDateLabel = new JLabel();
     BorderLayout borderLayout4 = new BorderLayout();
     TaskPanel tasksPanel = new TaskPanel(this);
-    ProcessPanel processesPanel = new ProcessPanel(this);
+    ProcessPanel processesPanel = new ProcessPanel();
     EventsPanel eventsPanel = new EventsPanel(this);
     AgendaPanel agendaPanel = new AgendaPanel(this);
     ImageIcon expIcon = new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/exp_right.png"));
@@ -225,7 +226,7 @@ public class DailyItemsPanel extends JPanel {
         });
 
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl, ProcessList pl) {
 //            	Util.debug("DailyItemsPanel Project Listener: Project is going to be changed!");				
 //            	Util.debug("current project is " + CurrentProject.get().getTitle());
 

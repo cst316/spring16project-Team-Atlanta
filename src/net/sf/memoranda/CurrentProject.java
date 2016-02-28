@@ -96,7 +96,7 @@ public class CurrentProject {
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         ContactsList newcontacts = CurrentStorage.get().openContactsList(project);
-        notifyListenersBefore(project, newnotelist, newtasklist, newresources, newcontacts);
+        notifyListenersBefore(project, newnotelist, newtasklist, newresources, newcontacts, newprocesslist);
         _project = project;
         _tasklist = newtasklist;
         _processlist = newprocesslist;
@@ -115,9 +115,9 @@ public class CurrentProject {
         return projectListeners;
     }
 
-    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl) {
+    private static void notifyListenersBefore(Project project, NoteList nl, TaskList tl, ResourcesList rl, ContactsList cl, ProcessList pl) {
         for (int i = 0; i < projectListeners.size(); i++) {
-            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl, cl);
+            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl, cl, pl);
             /*DEBUGSystem.out.println(projectListeners.get(i));*/
         }
     }
