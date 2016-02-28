@@ -48,6 +48,15 @@ public class Resource {
         return _desc;
     }
     
+    /**
+     * @author Mills
+     * Setter for edit description attribute.
+     */
+
+    public void setDesc(String desc){
+    	_desc = desc;
+    }
+
     public boolean isInetShortcut() {
         return _isInetShortcut;
     }

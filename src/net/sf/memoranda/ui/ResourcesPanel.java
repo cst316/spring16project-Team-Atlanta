@@ -254,9 +254,29 @@ public class ResourcesPanel extends JPanel {
         
     }
     
+     /**
+     * @author MMills7
+     */
+    
     void newResDesc_actionPerformed(ActionEvent e){
-    	String input = JOptionPane.showInputDialog("Enter Description for Resource:");
+    	int[] toEdit = resourcesTable.getSelectedRows();
+    	EditResourcesDescDialog dlg = new EditResourcesDescDialog(App.getFrame(), Local.getString("New resource description"));
+        Dimension frmSize = App.getFrame().getSize();
+        Point loc = App.getFrame().getLocation();
+        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+        dlg.setVisible(true);
+        if (dlg.CANCELLED)
+            return;
         
+        String newDesc = dlg.descField.getText();
+        System.out.println(newDesc);
+        
+        for (int i = 0; i < toEdit.length; i++) {
+        	CurrentProject.getResourcesList().editResourceDesc(
+        		((Resource) resourcesTable.getModel().getValueAt(toEdit[i], ResourcesTable._RESOURCE)).getPath(), newDesc);
+        }
+        
+        resourcesTable.tableChanged();
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
